@@ -2,6 +2,7 @@
 using NinjaDomain.DataModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApplication
 {
@@ -13,23 +14,49 @@ namespace ConsoleApplication
 
             //InsertMultipleNinjas();
 
-            SimpleNinjaQuery();
+            //SimpleNinjaQuery();
 
-            SimpleNinjaGraphQuery();
-
-            QueryAndUpdateNinja();
+            //QueryAndUpdateNinja();
 
             QueryAndUpdateNinjaDisconnected();
 
-            DeleteNinja();
+            //SimpleNinjaGraphQuery();
 
-
-
+            // DeleteNinja();
 
             Console.ReadKey();
         }
 
+        private static void QueryAndUpdateNinjaDisconnected()
+        {
+            throw new NotImplementedException();
+        }
 
+        private static void QueryAndUpdateNinja()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninja = context.Ninjas.FirstOrDefault();
+                ninja.ServedInOniwaban = (!ninja.ServedInOniwaban);
+                context.SaveChanges();
+            }
+        }
+
+        private static void SimpleNinjaQuery()
+        {
+            using (var context = new NinjaContext())
+            {
+                var ninja = context.Ninjas
+                    .Where(n => n.Name.Contains("M"))
+                    .OrderBy(n => n.Name)
+                    .Skip(1)
+                    .Take(1)
+                    .FirstOrDefault();
+
+                Console.WriteLine(ninja?.Name);
+            }
+        }
 
         private static void InsertNinja()
         {
