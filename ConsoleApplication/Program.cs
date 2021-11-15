@@ -2,6 +2,7 @@
 using NinjaDomain.DataModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ConsoleApplication
@@ -18,18 +19,100 @@ namespace ConsoleApplication
 
             //QueryAndUpdateNinja();
 
-            QueryAndUpdateNinjaDisconnected();
+            //QueryAndUpdateNinjaDisconnected();
 
-            //SimpleNinjaGraphQuery();
+            //RetrieveDataWithFind();
 
-            // DeleteNinja();
+            //SimpleNinjaGraphQuery() ;
+
+            //DeleteNinja();
+
+            InsertNinjaWithEquipment();
 
             Console.ReadKey();
         }
 
+        private static void InsertNinjaWithEquipment()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninja = new Ninja()
+                {
+                    Name = "Kacy Catanzoro",
+                    ServedInOniwaban = false,
+                    DateOfBirth = new DateTime(1990, 1, 14),
+                    ClanId = 1
+                };
+
+                var muscles = new NinjaEquipment
+                {
+                    Name = "Muscles",
+                    Type = EquipmentType.Tool
+                };
+
+                var spunk = new NinjaEquipment
+                {
+                    Name = "Spunk (adica curaj)",
+                    Type = EquipmentType.Weapon
+                };
+
+                context.Ninjas.Add(ninja);
+                ninja.EquipmentOwned.Add(muscles);
+                ninja.EquipmentOwned.Add(spunk);
+
+                context.SaveChanges();
+
+            }
+        }
+
+        private static void DeleteNinja()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninja = context.Ninjas.FirstOrDefault();
+                context.Ninjas.Remove(ninja);
+                context.SaveChanges();
+
+            }
+        }
+
+        private static void RetrieveDataWithFind()
+        {
+            var keyVal = 2;
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninja = context.Ninjas.Find(keyVal);
+                Console.WriteLine($"After find #1: {ninja.Name}");
+
+                context.Database.Log = Console.WriteLine;
+                var ninja2 = context.Ninjas.Find(keyVal);
+                Console.WriteLine($"After find #1: {ninja2.Name}");
+            }
+
+        }
+
         private static void QueryAndUpdateNinjaDisconnected()
         {
-            throw new NotImplementedException();
+            Ninja ninja;
+
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                ninja = context.Ninjas.FirstOrDefault();
+            }
+
+            ninja.ServedInOniwaban = (!ninja.ServedInOniwaban);
+
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                context.Entry(ninja).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
         }
 
         private static void QueryAndUpdateNinja()
