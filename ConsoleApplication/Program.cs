@@ -23,13 +23,57 @@ namespace ConsoleApplication
 
             //RetrieveDataWithFind();
 
-            //SimpleNinjaGraphQuery() ;
-
             //DeleteNinja();
 
-            InsertNinjaWithEquipment();
+            //InsertNinjaWithEquipment();
+
+            //EagerLoadingNinja();
+
+            //ExplicitLoadingNinja();
+
+            //ProjectionQuery();
+
 
             Console.ReadKey();
+        }
+
+        private static void ProjectionQuery()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+
+                var ninjas = context.Ninjas
+                                .Select(x => new { x.Name, x.DateOfBirth, x.EquipmentOwned })
+                                .ToList();
+
+            }
+        }
+
+        private static void EagerLoadingNinja()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+
+                // Include() does EAGER loading
+                var ninja = context.Ninjas.Include(e => e.EquipmentOwned).Include(c => c.Clan).FirstOrDefault(x => x.EquipmentOwned.Count > 0);
+            }
+        }
+
+        private static void ExplicitLoadingNinja()
+        {
+
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninja = context.Ninjas.FirstOrDefault(x => x.EquipmentOwned.Count > 0);
+
+                Console.WriteLine($"Ninja retrieved: {ninja.Name}"); // in this step the equipment was not yet loaded
+
+                // Load() method does explicit loading
+                context.Entry(ninja).Collection(e => e.EquipmentOwned).Load(); // here the equipment was LAZY loaded
+            }
         }
 
         private static void InsertNinjaWithEquipment()
