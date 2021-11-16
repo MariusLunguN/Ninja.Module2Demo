@@ -1,4 +1,5 @@
-﻿using NinjaDomain.Classes;
+﻿using NinjaDomain;
+using NinjaDomain.Classes;
 using NinjaDomain.DataModel;
 using System;
 using System.Collections.Generic;

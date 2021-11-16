@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataHelper.cs" />
+    <Compile Include="DisconnectedRepository.cs" />
     <Compile Include="Migrations\202111131101072_Initial.cs" />
     <Compile Include="Migrations\202111131101072_Initial.designer.cs">
       <DependentUpon>202111131101072_Initial.cs</DependentUpon>
@@ -60,6 +62,10 @@
     <Compile Include="Migrations\202111131122459_AddBirthdayToNinja.cs" />
     <Compile Include="Migrations\202111131122459_AddBirthdayToNinja.designer.cs">
       <DependentUpon>202111131122459_AddBirthdayToNinja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111161714328_Add_MVC_proj.cs" />
+    <Compile Include="Migrations\202111161714328_Add_MVC_proj.designer.cs">
+      <DependentUpon>202111161714328_Add_MVC_proj.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NinjaContext.cs" />
@@ -81,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111131122459_AddBirthdayToNinja.resx">
       <DependentUpon>202111131122459_AddBirthdayToNinja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111161714328_Add_MVC_proj.resx">
+      <DependentUpon>202111161714328_Add_MVC_proj.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
